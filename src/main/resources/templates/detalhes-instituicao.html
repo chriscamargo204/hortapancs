@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes da Instituição</title>
+</head>
+<body>
+<h2>Detalhes da Instituição: <span th:text="${instituicao.nome}"></span></h2>
+<h3>Voluntários Vinculados</h3>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="voluntario : ${voluntarios}">
+        <td th:text="${voluntario.nome}"></td>
+        <td th:text="${voluntario.email}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/instituicoes/listar" class="btn btn-secondary">Voltar à Lista de Instituições</a>
+</body>
+</html>

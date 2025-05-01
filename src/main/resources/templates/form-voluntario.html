@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${voluntario.id != null} ? 'Editar Voluntário' : 'Cadastrar Voluntário'">Cadastro de Voluntário</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #7bdb94, #1d4f1f); /* Gradiente de verde moderno */
+      color: #fff;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      backdrop-filter: blur(10px); /* Efeito de desfoque no fundo */
+      z-index: 2;
+      position: relative;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      color: #3e8e41;
+      letter-spacing: 1px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .form-group label {
+      font-size: 1.1rem;
+      color: #3e8e41;
+      margin-bottom: 10px;
+    }
+
+    .form-control {
+      border-radius: 10px;
+      font-size: 1rem;
+      padding: 12px;
+      border: 2px solid #7bdb94;
+      background: #f7f7f7;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .form-control:focus {
+      border-color: #00b894;
+      box-shadow: 0 0 0 0.2rem rgba(0, 184, 148, 0.25); /* Foco futurista */
+    }
+
+    .btn-primary {
+      background-color: #00b894;
+      border-color: #00b894;
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
+    }
+
+    .btn-primary:hover {
+      background-color: #1d4f1f;
+      border-color: #1d4f1f;
+      transform: scale(1.05);
+    }
+
+    .btn-secondary {
+      background-color: #333;
+      border-color: #333;
+      padding: 10px 20px;
+      font-size: 1.1rem;
+      border-radius: 50px;
+      letter-spacing: 0.8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background-color: #4d4d4d;
+      border-color: #4d4d4d;
+      transform: scale(1.05);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: #dcdcdc;
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+    }
+
+    .footer a {
+      color: #7bdb94;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Folhas desenhadas */
+    .leaf {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      background-image: url('https://img.icons8.com/ios/452/leaf.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      opacity: 0.1;
+      z-index: 1;
+      top: 10%;
+      left: 10%;
+      transform: rotate(15deg);
+    }
+
+    .leaf-2 {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      background-image: url('https://img.icons8.com/ios/452/leaf.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      opacity: 0.15;
+      z-index: 1;
+      top: 20%;
+      right: -5%;
+      transform: rotate(30deg);
+    }
+
+    .leaf-3 {
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      background-image: url('https://img.icons8.com/ios/452/leaf.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      opacity: 0.2;
+      z-index: 1;
+      bottom: 20%;
+      left: 30%;
+      transform: rotate(-20deg);
+    }
+
+    .leaf-4 {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      background-image: url('https://img.icons8.com/ios/452/leaf.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      opacity: 0.25;
+      z-index: 1;
+      top: 50%;
+      right: 10%;
+      transform: rotate(45deg);
+    }
+
+    .form-wrapper {
+      position: relative;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="page-header">
+    <h2 th:text="${voluntario.id != null} ? 'Editar Voluntário' : 'Cadastrar Voluntário'"></h2>
+  </div>
+
+  <div class="form-wrapper">
+    <form th:action="@{/voluntarios/salvar}" th:object="${voluntario}" method="post">
+      <input type="hidden" th:field="*{id}"/>
+
+      <div class="form-group">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" th:field="*{nome}" class="form-control" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" th:field="*{email}" class="form-control" required>
+      </div>
+
+      <div class="form-group">
+        <label for="cep">CEP</label>
+        <input type="text" id="cep" th:field="*{cep}" class="form-control" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-3" th:text="${voluntario.id != null} ? 'Atualizar' : 'Cadastrar'">Cadastrar</button>
+    </form>
+
+    <a href="/voluntarios/listar" class="btn btn-secondary mt-3">Voltar à lista</a>
+  </div>
+</div>
+
+<!-- Elementos naturais (folhas) -->
+<div class="leaf"></div>
+<div class="leaf-2"></div>
+<div class="leaf-3"></div>
+<div class="leaf-4"></div>
+
+<div class="footer">
+  <p>&copy; 2025 Hortas Comunitárias. Todos os direitos reservados. <a href="#">Termos e Condições</a></p>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Detalhes do Voluntário</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
+  <div id="map" style="width: 100%; height: 400px;"></div>
+</head>
+<script>
+  function initMap() {
+      var voluntarioLocation = { lat: /*[${voluntario.latitude}]*/, lng: /*[${voluntario.longitude}]*/ };
+
+      var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: voluntarioLocation
+      });
+
+      var marker = new google.maps.Marker({
+          position: voluntarioLocation,
+          map: map,
+          title: "Localização do Voluntário"
+      });
+  }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
+<body>
+<h1>Detalhes do Voluntário</h1>
+<p><strong>Nome:</strong> <span th:text="${voluntario.nome}"></span></p>
+<p><strong>Email:</strong> <span th:text="${voluntario.email}"></span></p>
+<p><strong>CEP:</strong> <span th:text="${voluntario.cep}"></span></p>
+
+<!-- Exibindo latitude e longitude -->
+<p><strong>Latitude:</strong> <span th:text="${voluntario.latitude}"></span></p>
+<p><strong>Longitude:</strong> <span th:text="${voluntario.longitude}"></span></p>
+
+<!-- Botão para voltar -->
+<a href="/voluntarios">Voltar</a>
+</body>
+</html>

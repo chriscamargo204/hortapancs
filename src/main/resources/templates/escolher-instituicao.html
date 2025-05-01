@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Escolher Instituição</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: white;
+        color: #333;
+    }
+
+    .container {
+        margin-top: 40px;
+    }
+
+    .header-section {
+        background: linear-gradient(145deg, #4CAF50, #388e3c);
+        color: white;
+        padding: 30px;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+
+    p {
+        font-size: 1.1rem;
+    }
+
+    .form-container {
+        margin-top: 30px;
+        padding: 30px;
+        background: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    .btn-custom {
+        font-size: 1rem;
+        padding: 12px 25px;
+        border-radius: 25px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        background-color: #4CAF50;
+        color: white;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .btn-custom:hover {
+        transform: translateY(-2px);
+        background-color: #388e3c;
+    }
+
+    .footer {
+        background-color: #f1f3f4;
+        padding: 20px;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        margin-top: 30px;
+    }
+
+    .leaf-icon {
+        width: 40px;
+        height: 40px;
+        background-image: url('https://img.icons8.com/ios-filled/50/000000/plant.png');
+        background-size: cover;
+        display: inline-block;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in-up {
+        animation: fadeInUp 1s ease-out;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header-section fade-in-up">
+    <h2><span class="leaf-icon"></span> Escolher Instituição</h2>
+    <p><span class="leaf-icon"></span> Associe o voluntário à instituição desejada.</p>
+  </div>
+
+  <div class="form-container fade-in-up">
+    <form action="/voluntarios/salvar-manual" method="post">
+      <input type="hidden" name="voluntarioId" th:value="${voluntario.id}" />
+
+      <div class="form-group">
+        <label for="instituicaoId">Escolha a Instituição</label>
+        <select class="form-control" id="instituicaoId" name="instituicaoId" required>
+          <option disabled selected value="">-- Selecione --</option>
+          <th:block th:each="instituicao : ${instituicoes}">
+            <option th:value="${instituicao.id}"
+                    th:text="${instituicao.nome + ' - ' + #numbers.formatDecimal(distancias[instituicao.id], 1, 'COMMA', 2, 'POINT') + ' km'}">
+            </option>
+          </th:block>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-custom">Associar Instituição</button>
+    </form>
+  </div>
+
+  <div class="footer fade-in-up text-center">
+    <a href="/" class="btn btn-success btn-custom"><span class="leaf-icon"></span> Voltar ao Início</a>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

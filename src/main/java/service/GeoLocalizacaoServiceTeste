@@ -1,0 +1,86 @@
+package com.pancs.hortapancs.service;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.*;
+import org.springframework.web.client.RestTemplate;
+
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+public class GeolocalizacaoServiceTest {
+
+    @Mock
+    private RestTemplate restTemplate;
+
+    @InjectMocks
+    private GeolocalizacaoService geolocalizacaoService;
+
+    private final String cepValido = "01001000";
+
+    @BeforeEach
+    public void setup() {
+        // Inicialização automática feita com @SpringBootTest e @Mock/@InjectMocks
+    }
+
+    @Test
+    public void deveRetornarCoordenadasQuandoCepValido() {
+        // Mock da resposta do ViaCEP
+        String respostaViaCep = """
+            {
+              "cep": "01001-000",
+              "logradouro": "Praça da Sé",
+              "bairro": "Sé",
+              "localidade": "São Paulo",
+              "uf": "SP"
+            }
+        """;
+
+        // Mock da resposta do Nominatim
+        String respostaNominatim = """
+            [
+              {
+                "lat": -23.55052,
+                "lon": -46.633308
+              }
+            ]
+        """;
+
+        when(restTemplate.getForObject(contains("viacep.com.br"), eq(String.class)))
+                .thenReturn(respostaViaCep);
+
+        when(restTemplate.exchange(
+                contains("nominatim.openstreetmap.org"),
+                eq(HttpMethod.GET),
+                any(HttpEntity.class),
+                eq(String.class))
+        ).thenReturn(new ResponseEntity<>(respostaNominatim, HttpStatus.OK));
+
+        double[] coordenadas = geolocalizacaoService.buscarCoordenadasPorCEP(cepValido);
+
+        assertNotNull(coordenadas);
+        assertEquals(-23.55052, coordenadas[0]);
+        assertEquals(-46.633308, coordenadas[1]);
+    }
+
+    @Test
+    public void deveRetornarNullQuandoCepInvalido() {
+        String respostaInvalida = """
+            {
+              "erro": true
+            }
+        """;
+
+        when(restTemplate.getForObject(contains("viacep.com.br"), eq(String.class)))
+                .thenReturn(respostaInvalida);
+
+        double[] coordenadas = geolocalizacaoService.buscarCoordenadasPorCEP("00000000");
+
+        assertNull(coordenadas);
+    }
+}

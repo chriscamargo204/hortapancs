@@ -1,0 +1,4 @@
+2025-04-10 23:15:33.416148-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM INSTITUICAO VOLUNTARIO \000d\000a[*]VOLUNTARIO"; SQL statement:
+SELECT * FROM INSTITUICAO VOLUNTARIO 
+VOLUNTARIO [42000-224]

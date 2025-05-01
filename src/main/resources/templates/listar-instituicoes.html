@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Instituições</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            color: #333;
+        }
+
+        .container {
+            margin-top: 40px;
+        }
+
+        .header-section {
+            background: linear-gradient(145deg, #4CAF50, #388e3c); /* Cor de verde mais suave */
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1rem;
+        }
+
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            table-layout: fixed;
+            border: 2px solid #ccc;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+        }
+
+        .thead-light {
+            background: linear-gradient(145deg, #4CAF50, #388e3c);
+            color: white;
+        }
+
+        .cep-col {
+            width: 150px;
+        }
+
+        .btn-custom {
+            font-size: 1rem;
+            padding: 12px 25px;
+            border-radius: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            background-color: #4CAF50;
+            color: white;
+            display: inline-flex; /* Garantir alinhamento */
+            justify-content: center; /* Centralizar conteúdo dentro do botão */
+            align-items: center; /* Centralizar conteúdo verticalmente */
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            background-color: #388e3c;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .footer {
+            background-color: #f1f3f4;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .alert {
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        /* Adicionando ícones e elementos de folha */
+        .leaf-icon {
+            width: 40px;
+            height: 40px;
+            background-image: url('https://img.icons8.com/ios-filled/50/000000/plant.png');
+            background-size: cover;
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .footer a {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-section fade-in-up">
+        <h2><span class="leaf-icon"></span> Lista de Instituições Cadastradas</h2>
+        <p><span class="leaf-icon"></span> Veja as instituições que estão participando do projeto de Hortas Comunitárias.</p>
+    </div>
+
+    <!-- Exibir mensagens de sucesso ou erro -->
+    <div th:if="${mensagem}" class="alert alert-success mt-4">
+        <p th:text="${mensagem}"></p>
+    </div>
+    <div th:if="${erro}" class="alert alert-danger mt-4">
+        <p th:text="${erro}"></p>
+    </div>
+
+    <table class="table table-bordered mt-4 fade-in-up">
+        <thead class="thead-light">
+        <tr>
+            <th>Nome</th>
+            <th>Endereço</th>
+            <th class="cep-col">CEP</th>
+            <th>Email</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="instituicao : ${instituicoes}">
+            <td th:text="${instituicao.nome}"></td>
+            <td th:text="${instituicao.endereco}"></td>
+            <td th:text="${instituicao.cep}" class="cep-col"></td>
+            <td th:text="${instituicao.email}"></td>
+            <td>
+                <a th:href="@{/instituicoes/editar/{id}(id=${instituicao.id})}" class="btn btn-primary btn-custom">Editar</a>
+                <a th:href="@{/instituicoes/excluir/{id}(id=${instituicao.id})}" class="btn btn-danger btn-custom"
+                   onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="footer fade-in-up text-center">
+        <a href="/" class="btn btn-success btn-custom"><span class="leaf-icon"></span> Voltar ao Início</a>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
